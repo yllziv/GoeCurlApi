@@ -1,3 +1,5 @@
+package com.yanglonglong.pulishService;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;

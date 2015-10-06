@@ -1,3 +1,5 @@
+package com.yanglonglong.pulishService;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
@@ -11,35 +13,48 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
 /**
- * 实现在Geoserver中 添加工作区
- * curl -v -u admin:geoserver -XPOST -H "Content-type: text/xml" -d "<workspace><name>abcd</name></workspace>" http://localhost:8080/geoserver/rest/workspaces
- * -v 显示get请求全过程解析
- * -u/--user <user[:password]>设置服务器的用户和密码
- * -XPOST post请求
- * -H/--header <header> 指定请求头参数
- * -d/--data <data>   HTTP POST方式传送数据
+ * 实现在Geoserver中添加ArcSDE的数据存储
+ * curl -v -u admin:geoserver -XPOST -T arcseDatastore.xml -H "Content-type: text/xml"
+ * http://localhost:8080/geoserver/rest/workspaces/abcd/datastores
  */
-public class AddWorkSpace {
+public class ConnectionArcSDE {
 
     public static void main(String[] args) throws Exception {
-        DefaultHttpClient httpclient = new  DefaultHttpClient();
+        DefaultHttpClient httpclient = new DefaultHttpClient();
         try {
             // curl -u
             httpclient.getCredentialsProvider().setCredentials(
                     new AuthScope("localhost", 8080),
                     new UsernamePasswordCredentials("admin", "geoserver"));
             ResponseHandler<String> responseHandler = new BasicResponseHandler();
-            HttpPost httpost = new HttpPost("http://localhost:8080/geoserver/rest/workspaces");
+            // abcd为工作区
+            HttpPost httppost = new HttpPost("http://localhost:8080/geoserver/rest/workspaces/abcd/datastores");
             // curl -H
-            httpost.setHeader(HttpHeaders.CONTENT_TYPE, "text/xml");
+            httppost.setHeader(HttpHeaders.CONTENT_TYPE, "text/xml");
 
             // curl -d
-            String transData = "<workspace><name>abcd</name></workspace>";
-            httpost.setEntity(new StringEntity(transData));
+
+            String xml = "<?xml version="
+                    + "\"1.0\""
+                    + " encoding="
+                    + "\"UTF-8\""
+                    + "?><dataStore>" +
+                    "<name>fromSDE</name>" +
+                    "<connectionParameters>" +
+                    "<server>192.168.2.113</server>" +
+                    "<port>5151</port>" +
+                    "<instance>arcse</instance>" +
+                    "<user>sde</user>" +
+                    "<password>yll</password>" +
+                    "<dbtype>arcsde</dbtype>" +
+                    "</connectionParameters></dataStore>";
+
+            String transData = xml;
+            httppost.setEntity(new StringEntity(transData));
 
             // curl -v
-            System.out.println("executing request" + httpost.getRequestLine());
-            HttpResponse response = httpclient.execute(httpost);
+            System.out.println("executing request" + httppost.getRequestLine());
+            HttpResponse response = httpclient.execute(httppost);
             HttpEntity responseEntity = response.getEntity();
             System.out.println("----------------------------------------");
             String pageHTML = EntityUtils.toString(responseEntity);
@@ -51,7 +66,6 @@ public class AddWorkSpace {
             }
             EntityUtils.consume(responseEntity);
         } finally {
-
             httpclient.getConnectionManager().shutdown();
         }
     }
