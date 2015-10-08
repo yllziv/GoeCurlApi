@@ -37,4 +37,8 @@ public class GetArcSDEList {
             System.out.println(layer.getSpatialColumn());
         }
     }
+    public static String getAlreadyPuclicService(){
+
+        return "";
+    }
 }
