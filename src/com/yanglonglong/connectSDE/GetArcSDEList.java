@@ -37,6 +37,7 @@ public class GetArcSDEList {
             System.out.println(layer.getSpatialColumn());
         }
     }
+    /*获取ArcSDE中已经发布的服务*/
     public static String getAlreadyPuclicService(){
 
         return "";

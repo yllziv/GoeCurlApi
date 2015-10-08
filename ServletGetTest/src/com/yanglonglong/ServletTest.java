@@ -1,6 +1,8 @@
 package com.yanglonglong;
 
-import net.sf.json.JSONObject;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -20,10 +22,11 @@ public class ServletTest extends javax.servlet.http.HttpServlet {
         response.setContentType("application/json;charset=GB2312");
 
         String jsonStr = "{'password':'123456','username':'张三'}";
-        JSONObject jsonObj = JSONObject.fromString(jsonStr);
+        Gson gson = new Gson();
+        JsonElement a = gson.toJsonTree(jsonStr);
         PrintWriter out = null;
         out = response.getWriter();// 获得输出流out
-        out.println(jsonObj.toString());
+        out.println(a.toString());
         out.flush(); // 冲刷缓冲区
         out.close(); // 关闭输出
     }
