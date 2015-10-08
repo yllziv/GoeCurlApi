@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+    <servlet>
+        <servlet-name>ServletTest</servlet-name>  <!-- 定义Servlet名字 -->
+        <servlet-class>com.yanglonglong.ServletTest</servlet-class> <!-- 指定Servlet完全限定名 -->
+    </servlet>
+
+    <!--配置映射路径-->
+    <servlet-mapping>
+        <servlet-name>ServletTest</servlet-name> <!-- 与之前定义的Servlet名字一致 -->
+        <url-pattern>/servlet/ServletTest</url-pattern> <!-- 指定Servlet访问路径 -->
+    </servlet-mapping>
+</web-app>
