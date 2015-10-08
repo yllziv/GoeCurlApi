@@ -14,16 +14,14 @@ public class ServletTest extends javax.servlet.http.HttpServlet {
     //处理GET请求
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("我是doGet()方法！用来处理GET请求");
-        System.out.println(request.getAttributeNames());
-        response.setContentType("text/html;charset=GB2312");
-        PrintWriter out = response.getWriter(); // 获得输出流out
-        out.println("<HTML>"); // 在网页中输出
-        out.println("<BODY>");
-        out.println("This is servlet demo");
-        out.println("</BODY>");
-        out.println("</HTML>");
-        out.close(); // 关闭输出流
+        request.setCharacterEncoding("GB2312");
+        response.setContentType("text/plain;charset=GB2312");
+        int a = new Integer(request.getParameter("a"));
+        int b = new Integer(request.getParameter("b"));
+        PrintWriter out = response.getWriter();// 获得输出流out
+        out.println(a + b);
+        out.flush(); // 冲刷缓冲区
+        out.close(); // 关闭输出
     }
     //处理POST请求
     public void doPost(HttpServletRequest request, HttpServletResponse response)
