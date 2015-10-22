@@ -28,7 +28,7 @@ import java.util.Vector;
  */
 public class GetArcSDEList {
 
-    private static String sdeServer = "192.168.2.113";
+    private static String sdeServer = "192.168.2.142";
     private static int sdeInstance = 5151; // ArcSDE 服务器的端口号
     private static String sdeDatabase = "arcse";
     private static String sdeUser = "sde";
@@ -37,15 +37,16 @@ public class GetArcSDEList {
 
     public static void main(String[] args) throws Exception {
         ArrayList<String> allLayers = getAllLayers();
-        ArrayList<String> publishLayers = getAlreadyPuclicService();
-        ArrayList<String> unPublishLayers = new ArrayList<>();
-        for(String tempLayers : allLayers){
-            if(publishLayers.contains(tempLayers)){}
-            else{
-                unPublishLayers.add(tempLayers);
-            }
-        }
-        System.out.println(unPublishLayers.toString());
+        System.out.println(allLayers.toString());
+//        ArrayList<String> publishLayers = getAlreadyPuclicService();
+//        ArrayList<String> unPublishLayers = new ArrayList<>();
+//        for(String tempLayers : allLayers){
+//            if(publishLayers.contains(tempLayers)){}
+//            else{
+//                unPublishLayers.add(tempLayers);
+//            }
+//        }
+
     }
 
 
