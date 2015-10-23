@@ -12,6 +12,8 @@ import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
+import java.util.HashMap;
+
 /**
  * 实现在Geoserver中添加ArcSDE的图层
  * curl -v -u admin:geoserver -XPOST -H "Content-type: text/xml"
@@ -19,22 +21,21 @@ import org.apache.http.util.EntityUtils;
  * http://localhost:8080/geoserver/rest/workspaces/abcd/datastores/fromSDE/featuretypes
  */
 public class AddLayerWithArcSDE {
-
-    public static void main(String[] args) throws Exception {
+    public static void addLayer(HashMap addLayerPara) throws Exception {
         DefaultHttpClient httpclient = new DefaultHttpClient();
         try {
             // curl -u
             httpclient.getCredentialsProvider().setCredentials(
-                    new AuthScope("localhost", 8080),
-                    new UsernamePasswordCredentials("admin", "geoserver"));
+                    new AuthScope((String) addLayerPara.get("ip"), Integer.parseInt(addLayerPara.get("port").toString())),
+                    new UsernamePasswordCredentials((String) addLayerPara.get("user"), (String) addLayerPara.get("passwd")));
             ResponseHandler<String> responseHandler = new BasicResponseHandler();
             // abcd为工作区，fromSDE为数据存储的名称
-            HttpPost httppost = new HttpPost("http://localhost:8080/geoserver/rest/workspaces/abcd/datastores/fromSDE/featuretypes");
+            HttpPost httppost = new HttpPost("http://localhost:8080/geoserver/rest/workspaces/"+addLayerPara.get("workspace")+"/datastores/"+addLayerPara.get("datastory")+"/featuretypes");
             // curl -H
             httppost.setHeader(HttpHeaders.CONTENT_TYPE, "text/xml");
 
             // curl -d
-            String transData = "<featureType><name>SDE.LUWANG</name></featureType>";
+            String transData = "<featureType><name>"+addLayerPara.get("name")+"</name></featureType>";
             httppost.setEntity(new StringEntity(transData));
 
             // curl -v
@@ -56,5 +57,16 @@ public class AddLayerWithArcSDE {
             int s = 1;
             httpclient.getConnectionManager().shutdown();
         }
+    }
+    public static void main(String[] args) throws Exception {
+        HashMap<String,String> addLayerPara =  new HashMap<String,String>();
+        addLayerPara.put("name","SDE.LUWANG");
+        addLayerPara.put("ip","localhost");
+        addLayerPara.put("port","8080");
+        addLayerPara.put("user","admin");
+        addLayerPara.put("passwd","geoserver");
+        addLayerPara.put("workspace","abcd");
+        addLayerPara.put("datastory","fromSDE");
+        addLayer(addLayerPara);
     }
 }

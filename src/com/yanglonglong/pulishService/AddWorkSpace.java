@@ -22,8 +22,7 @@ import org.apache.http.util.EntityUtils;
  * -d/--data <data>   HTTP POST方式传送数据
  */
 public class AddWorkSpace {
-
-    public static void main(String[] args) throws Exception {
+    public static void addworkspace(String workSpaceName)throws Exception{
         DefaultHttpClient httpclient = new  DefaultHttpClient();
         try {
             // curl -u
@@ -36,7 +35,7 @@ public class AddWorkSpace {
             httpost.setHeader(HttpHeaders.CONTENT_TYPE, "text/xml");
 
             // curl -d
-            String transData = "<workspace><name>abcd</name></workspace>";
+            String transData = "<workspace><name>"+workSpaceName+"</name></workspace>";
             httpost.setEntity(new StringEntity(transData));
 
             // curl -v
@@ -56,5 +55,9 @@ public class AddWorkSpace {
 
             httpclient.getConnectionManager().shutdown();
         }
+    }
+    public static void main(String[] args) throws Exception {
+        String workSpaceName = "abcd";
+        addworkspace(workSpaceName);
     }
 }

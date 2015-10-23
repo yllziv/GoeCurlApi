@@ -12,14 +12,15 @@ import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
+import java.util.HashMap;
+
 /**
  * 实现在Geoserver中添加ArcSDE的数据存储
  * curl -v -u admin:geoserver -XPOST -T arcseDatastore.xml -H "Content-type: text/xml"
  * http://localhost:8080/geoserver/rest/workspaces/abcd/datastores
  */
 public class ConnectionArcSDE {
-
-    public static void main(String[] args) throws Exception {
+    public static void connectionArcSDE(HashMap dataStoryPara)throws Exception{
         DefaultHttpClient httpclient = new DefaultHttpClient();
         try {
             // curl -u
@@ -33,22 +34,35 @@ public class ConnectionArcSDE {
             httppost.setHeader(HttpHeaders.CONTENT_TYPE, "text/xml");
 
             // curl -d
+//            String xml = "<?xml version="
+//                    + "\"1.0\""
+//                    + " encoding="
+//                    + "\"UTF-8\""
+//                    + "?><dataStore>" +
+//                    "<name>fromSDE</name>" +
+//                    "<connectionParameters>" +
+//                    "<server>192.168.2.142</server>" +
+//                    "<port>5151</port>" +
+//                    "<instance>arcse</instance>" +
+//                    "<user>sde</user>" +
+//                    "<password>yll</password>" +
+//                    "<dbtype>arcsde</dbtype>" +
+//                    "</connectionParameters></dataStore>";
 
             String xml = "<?xml version="
                     + "\"1.0\""
                     + " encoding="
                     + "\"UTF-8\""
                     + "?><dataStore>" +
-                    "<name>fromSDE</name>" +
+                    "<name>"+dataStoryPara.get("name")+"</name>" +
                     "<connectionParameters>" +
-                    "<server>192.168.2.113</server>" +
-                    "<port>5151</port>" +
-                    "<instance>arcse</instance>" +
-                    "<user>sde</user>" +
-                    "<password>yll</password>" +
-                    "<dbtype>arcsde</dbtype>" +
+                    "<server>"+dataStoryPara.get("ip")+"</server>" +
+                    "<port>"+dataStoryPara.get("port")+"</port>" +
+                    "<instance>"+dataStoryPara.get("instance")+"</instance>" +
+                    "<user>"+dataStoryPara.get("user")+"</user>" +
+                    "<password>"+dataStoryPara.get("passwd")+"</password>" +
+                    "<dbtype>"+dataStoryPara.get("dbtype")+"</dbtype>" +
                     "</connectionParameters></dataStore>";
-
             String transData = xml;
             httppost.setEntity(new StringEntity(transData));
 
@@ -68,5 +82,17 @@ public class ConnectionArcSDE {
         } finally {
             httpclient.getConnectionManager().shutdown();
         }
+    }
+    public static void main(String[] args) throws Exception {
+        HashMap<String,String> dataStoryPara = new HashMap<String,String>();
+        dataStoryPara.put("name","fromSDE");
+        dataStoryPara.put("ip","192.168.2.142");
+        dataStoryPara.put("port","5151");
+        dataStoryPara.put("instance","arcse");
+        dataStoryPara.put("user","sde");
+        dataStoryPara.put("passwd","yll");
+        dataStoryPara.put("dbtype","arcsde");
+
+        connectionArcSDE(dataStoryPara);
     }
 }
